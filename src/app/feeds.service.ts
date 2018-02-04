@@ -1,40 +1,94 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/map';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 import {Feed} from './models/feed';
-import {FeedEntry} from './models/feed-entry';
 
 @Injectable()
 export class FeedsService {
-  private feedParserUrl = 'https://rss2json.com/api.json?rss_url=';
-  private feedUrls;
-  public feeds: Observable<Feed[]>;
+  private feedParserUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  private feedsSubject: BehaviorSubject<Feed[]>;
 
   constructor(private http: HttpClient) {
-    this.feedUrls = [
-      'https://github.com/RedGeekPanda/rss-on-angular/commits/master.atom',
-      'https://github.com/RedGeekPanda/rss-on-angular/commits/dev.atom'
-    ];
-    this.feeds = Observable.combineLatest<Feed>(this.feedUrls.map(feedUrl => this.getFeed(feedUrl)));
+    const cachedFeedsJson = localStorage.getItem('feeds');
+    this.feedsSubject = new BehaviorSubject<Feed[]>(cachedFeedsJson ? JSON.parse(cachedFeedsJson) : []);
+    this.feedsSubject.subscribe(feeds => localStorage.setItem('feeds', JSON.stringify(feeds)));
+    this.updateAllFeeds();
+    this.addFeed('https://github.com/RedGeekPanda/rss-on-angular/commits.atom').catch();
   }
 
-  private getFeed(feedUrl): Observable<Feed> {
-    return this.http.get(this.feedParserUrl.concat(feedUrl))
-      .map((feedParserResponse: FeedParserResponse) => {
-        console.log(feedParserResponse.status, feedParserResponse.feed.url);
-        return {
-          title: feedParserResponse.feed.title,
-          entries: feedParserResponse.items
-        };
+  get feeds() {
+    return this.feedsSubject.asObservable();
+  }
+
+  updateAllFeeds() {
+    Promise.all(this.feedsSubject.getValue().map(feed => this.fetchFeed(feed.url)))
+      .then((feedFetchResponses: FeedFetchResponse[]) => {
+        const feeds = this.feedsSubject.getValue();
+        feedFetchResponses.forEach(feedFetchResponse => {
+          const feedFetchIndex = feeds.findIndex(feed => feed.url === feedFetchResponse.url);
+          if (feedFetchIndex === -1) {
+            return;
+          }
+          if (feedFetchResponse.status !== 'ok') {
+            feeds[feedFetchIndex].url = '';
+            return;
+          }
+          feeds[feedFetchIndex] = toFeed(feedFetchResponse);
+        });
+        this.feedsSubject.next(feeds.filter(feed => feed.url));
+      });
+  }
+
+  addFeed(feedUrl): Promise<any> {
+    if (this.feedsSubject.getValue().find(feed => feed.url === feedUrl)) {
+      return Promise.resolve();
+    }
+    return this.fetchFeed(feedUrl)
+      .then(feedFetchResponse => {
+        if (feedFetchResponse.status !== 'ok') {
+          return Promise.reject('No such Feed.');
+        }
+        const feeds = this.feedsSubject.getValue();
+        if (feeds.find(feed => feed.url === feedUrl)) {
+          return Promise.resolve();
+        }
+        feeds.push(toFeed(feedFetchResponse));
+        this.feedsSubject.next(feeds);
+        return Promise.resolve();
+      });
+  }
+
+  removeFeed(feedUrl) {
+    const feeds = this.feedsSubject.getValue();
+    const removeIndex = feeds.findIndex(feed => feed.url === feedUrl);
+    if (removeIndex === -1) {
+      return;
+    }
+    feeds.splice(removeIndex, 1);
+    this.feedsSubject.next(feeds);
+  }
+
+  private fetchFeed(feedUrl): Promise<FeedFetchResponse> {
+    return this.http.get<FeedFetchResponse>(this.feedParserUrl.concat(encodeURIComponent(feedUrl)))
+      .toPromise()
+      .then((feedFetchResponse: FeedFetchResponse) => {
+        feedFetchResponse.url = feedUrl;
+        console.log(`${feedFetchResponse.status}:`,
+          feedFetchResponse.status === 'ok' ? feedFetchResponse.url : feedFetchResponse.message);
+        return feedFetchResponse;
       });
   }
 }
 
-interface FeedParserResponse {
+interface FeedFetchResponse {
+  url: string;
   status: string;
-  feed: { title, url };
-  items: FeedEntry[];
+  message: string;
+  feed: any;
+  items: any;
+}
+
+function toFeed(feedFetchResponse: FeedFetchResponse): Feed {
+  return Object.assign({...feedFetchResponse.feed, entries: feedFetchResponse.items});
 }
