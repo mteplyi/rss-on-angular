@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 
 import {AppComponent} from './app.component';
-import {FeedsService} from './feeds.service';
+import {FeedService} from './feed.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import {FeedsService} from './feeds.service';
     BrowserModule,
     HttpClientModule
   ],
-  providers: [FeedsService],
+  providers: [FeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

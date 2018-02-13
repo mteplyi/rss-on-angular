@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {FeedsService} from './feeds.service';
+import {FeedService} from './feed.service';
 import {Feed} from './models/feed';
 
 @Component({
@@ -11,13 +11,13 @@ import {Feed} from './models/feed';
 export class AppComponent {
   feeds: Feed[];
 
-  constructor(private feedsService: FeedsService) {
-    this.feedsService.feeds
+  constructor(private feedService: FeedService) {
+    this.feedService.getFeeds()
       .subscribe(feeds => this.feeds = feeds);
   }
 
   updateAllFeeds() {
-    this.feedsService.updateAllFeeds();
+    this.feedService.updateAllFeeds();
   }
 
   addFeed() {
@@ -25,10 +25,10 @@ export class AppComponent {
     if (!feedUrl) {
       return;
     }
-    this.feedsService.addFeed(feedUrl).catch(alert);
+    this.feedService.addFeed(feedUrl).catch(alert);
   }
 
   removeFeed(feedUrl) {
-    this.feedsService.removeFeed(feedUrl);
+    this.feedService.removeFeed(feedUrl);
   }
 }

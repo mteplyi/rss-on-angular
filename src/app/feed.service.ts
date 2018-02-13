@@ -5,7 +5,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Feed} from './models/feed';
 
 @Injectable()
-export class FeedsService {
+export class FeedService {
   private feedParserUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
   private feedsSubject: BehaviorSubject<Feed[]>;
 
@@ -17,7 +17,7 @@ export class FeedsService {
     this.addFeed('https://github.com/RedGeekPanda/rss-on-angular/commits.atom').catch();
   }
 
-  get feeds() {
+  getFeeds() {
     return this.feedsSubject.asObservable();
   }
 
