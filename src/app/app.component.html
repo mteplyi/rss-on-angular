@@ -1,8 +1,5 @@
-<button (click)="updateAllFeeds()">Update</button>
-<button (click)="addFeed()">Add</button>
-<ul>
-  <li *ngFor="let feed of feeds">
-    {{feed.title}} ({{feed.entries.length}})
-    <button (click)="removeFeed(feed.url)">Remove</button>
-  </li>
-</ul>
+<app-feed-list (select)="onSelectFeed($event)">
+</app-feed-list>
+<app-feed-entry-list [feedUrl]="selectedFeedUrl"
+                     (select)="onSelectFeedEntry($event)">
+</app-feed-entry-list>

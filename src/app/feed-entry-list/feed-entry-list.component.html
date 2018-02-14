@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let feedEntry of feedEntries"
+      (click)="onSelect(feedEntry)">
+    {{feedEntry.title}}
+  </li>
+</ul>

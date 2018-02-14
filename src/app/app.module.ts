@@ -4,10 +4,14 @@ import {HttpClientModule} from '@angular/common/http';
 
 import {AppComponent} from './app.component';
 import {FeedService} from './feed.service';
+import {FeedListComponent} from './feed-list/feed-list.component';
+import {FeedEntryListComponent} from './feed-entry-list/feed-entry-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FeedListComponent,
+    FeedEntryListComponent
   ],
   imports: [
     BrowserModule,

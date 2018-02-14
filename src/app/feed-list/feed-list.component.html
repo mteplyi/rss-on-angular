@@ -1,0 +1,9 @@
+<button (click)="onUpdateAll()">Update</button>
+<button (click)="onAdd()">Add</button>
+<ul>
+  <li *ngFor="let feed of feeds"
+      (click)="onSelect(feed)">
+    {{feed.title}} ({{feed.entries.length}})
+    <button (click)="onRemove(feed)">Remove</button>
+  </li>
+</ul>
