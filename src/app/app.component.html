@@ -3,3 +3,5 @@
 <app-feed-entry-list [feedUrl]="selectedFeedUrl"
                      (select)="onSelectFeedEntry($event)">
 </app-feed-entry-list>
+<app-feed-entry [feedEntryIdentifier]="{feedUrl:selectedFeedUrl,feedEntryGuid:selectedFeedEntryGuid}">
+</app-feed-entry>

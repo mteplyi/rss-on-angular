@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 
 import {Feed} from './models/feed';
 import {FeedEntry} from './models/feed-entry';
+import {FeedEntryIdentifier} from './models/feed-entry-identifier';
 
 @Injectable()
 export class FeedService {
@@ -29,10 +30,17 @@ export class FeedService {
   }
 
   getFeedEntries(feedUrl: string): Observable<FeedEntry[]> {
-    return this.feedSubject.asObservable().map((feeds: Feed[]) => {
+    return this.getFeeds().map((feeds: Feed[]) => {
       const feed = feeds.find(FeedService.withUrl(feedUrl));
       return feed ? feed.entries : [];
     });
+  }
+
+  getFeedEntry(feedEntryIdentifier: FeedEntryIdentifier): Observable<FeedEntry> {
+    return this.getFeedEntries(feedEntryIdentifier.feedUrl)
+      .map((feedEntries: FeedEntry[]) => {
+        return feedEntries.find(feedEntry => feedEntry.guid === feedEntryIdentifier.feedEntryGuid);
+      });
   }
 
   updateAllFeeds() {

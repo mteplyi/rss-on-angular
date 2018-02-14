@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Feed} from '../models/feed';
 import {FeedService} from '../feed.service';
 
