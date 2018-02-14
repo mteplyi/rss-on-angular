@@ -48,7 +48,7 @@ export class FeedService {
       .then((feedFetchResponses: FeedFetchResponse[]) => {
         const feeds = this.feedSubject.getValue();
         feedFetchResponses.forEach(feedFetchResponse => {
-          const feedFetchIndex = feeds.findIndex(feed => feed.url === feedFetchResponse.url);
+          const feedFetchIndex = feeds.findIndex(FeedService.withUrl(feedFetchResponse.url));
           if (feedFetchIndex === -1) {
             return;
           }
@@ -63,7 +63,7 @@ export class FeedService {
   }
 
   addFeed(feedUrl: string): Promise<any> {
-    if (this.feedSubject.getValue().find(feed => feed.url === feedUrl)) {
+    if (this.feedSubject.getValue().find(FeedService.withUrl(feedUrl))) {
       return Promise.resolve();
     }
     return this.fetchFeed(feedUrl)
@@ -72,7 +72,7 @@ export class FeedService {
           return Promise.reject('No such Feed.');
         }
         const feeds = this.feedSubject.getValue();
-        if (feeds.find(feed => feed.url === feedUrl)) {
+        if (feeds.find(FeedService.withUrl(feedUrl))) {
           return Promise.resolve();
         }
         feeds.push(toFeed(feedFetchResponse));
@@ -83,7 +83,7 @@ export class FeedService {
 
   removeFeed(feedUrl: string) {
     const feeds = this.feedSubject.getValue();
-    const removeIndex = feeds.findIndex(feed => feed.url === feedUrl);
+    const removeIndex = feeds.findIndex(FeedService.withUrl(feedUrl));
     if (removeIndex === -1) {
       return;
     }
