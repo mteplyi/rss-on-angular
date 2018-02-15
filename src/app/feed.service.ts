@@ -6,11 +6,11 @@ import 'rxjs/add/operator/map';
 
 import {Feed} from './models/feed';
 import {FeedEntry} from './models/feed-entry';
-import {FeedEntryIdentifier} from './models/feed-entry-identifier';
 
 @Injectable()
 export class FeedService {
   private static feedParserUrl = 'https://api.rss2json.com/v1/api.json';
+  private static feedParserApiKey = '4suhh43xbwdmmyfgdirtlch24ukysu2nuzry6mva';
   private feedSubject: BehaviorSubject<Feed[]>;
 
   constructor(private http: HttpClient) {
@@ -36,10 +36,10 @@ export class FeedService {
     });
   }
 
-  getFeedEntry(feedEntryIdentifier: FeedEntryIdentifier): Observable<FeedEntry> {
-    return this.getFeedEntries(feedEntryIdentifier.feedUrl)
+  getFeedEntry(feedUrl: string, feedEntryGuid: string): Observable<FeedEntry> {
+    return this.getFeedEntries(feedUrl)
       .map((feedEntries: FeedEntry[]) => {
-        return feedEntries.find(feedEntry => feedEntry.guid === feedEntryIdentifier.feedEntryGuid);
+        return feedEntries.find(feedEntry => feedEntry.guid === feedEntryGuid);
       });
   }
 
@@ -92,7 +92,10 @@ export class FeedService {
   }
 
   private fetchFeed(feedUrl: string): Promise<FeedFetchResponse> {
-    const params = new HttpParams().set('rss_url', feedUrl);
+    const params = new HttpParams()
+      .set('rss_url', feedUrl)
+      .set('api_key', FeedService.feedParserApiKey)
+      .set('count', '100');
     return this.http.get(FeedService.feedParserUrl, {params})
       .toPromise()
       .then((feedFetchResponse: FeedFetchResponse) => {

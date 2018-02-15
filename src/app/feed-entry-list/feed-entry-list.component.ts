@@ -9,9 +9,9 @@ import {FeedService} from '../feed.service';
 })
 export class FeedEntryListComponent implements OnChanges {
   feedEntries: FeedEntry[];
-  @Input() private feedUrl: string;
   @Input() selectedFeedEntryGuid: string;
   @Output() selectedFeedEntryGuidChange = new EventEmitter<string>();
+  @Input() private feedUrl: string;
 
   constructor(private feedService: FeedService) {
   }

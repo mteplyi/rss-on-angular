@@ -1,3 +1,20 @@
-<div>
-
+<div class="stats-section">
+  <h4>
+    Feeds count: {{feedsCount}}
+  </h4>
+  <h4 *ngIf="feedUrl">
+    Selected feed authors count: {{selectedFeedEntriesCount}}
+  </h4>
+  <h4 *ngIf="feedUrl">
+    Selected feed authors count: {{selectedFeedAuthorsCount}}
+  </h4>
+</div>
+<div *ngIf="feedEntryGuid"
+     class="stats-section">
+  <canvas baseChart
+          [labels]="chartLabels"
+          [data]="chartData"
+          chartType="pie"
+          [options]="{legend:{display:false}}">
+  </canvas>
 </div>

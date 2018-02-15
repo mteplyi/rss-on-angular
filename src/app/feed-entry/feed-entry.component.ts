@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {FeedService} from '../feed.service';
-import {FeedEntryIdentifier} from '../models/feed-entry-identifier';
 import {FeedEntry} from '../models/feed-entry';
 
 @Component({
@@ -10,15 +9,15 @@ import {FeedEntry} from '../models/feed-entry';
 })
 export class FeedEntryComponent implements OnChanges {
   feedEntry: FeedEntry;
-  @Input() private feedEntryIdentifier: FeedEntryIdentifier;
+  @Input() private feedUrl: string;
+  @Input() private feedEntryGuid: string;
 
   constructor(private feedService: FeedService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    if (changes.hasOwnProperty('feedEntryIdentifier')) {
-      this.feedService.getFeedEntry(this.feedEntryIdentifier)
+    if (changes.hasOwnProperty('feedUrl') || changes.hasOwnProperty('feedEntryGuid')) {
+      this.feedService.getFeedEntry(this.feedUrl, this.feedEntryGuid)
         .subscribe(feedEntry => this.feedEntry = feedEntry);
     }
   }

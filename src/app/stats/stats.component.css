@@ -1,0 +1,16 @@
+:host {
+  text-align: center;
+}
+
+.stats-section {
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: right;
+  padding: 10px;
+  height: 100%;
+  vertical-align: top;
+}
+
+canvas {
+  height: 100%;
+}

@@ -4,8 +4,10 @@
   <app-feed-entry-list [feedUrl]="selectedFeedUrl"
                        [(selectedFeedEntryGuid)]="selectedFeedEntryGuid">
   </app-feed-entry-list>
-  <app-feed-entry [feedEntryIdentifier]="{feedUrl:selectedFeedUrl,feedEntryGuid:selectedFeedEntryGuid}">
+  <app-feed-entry [feedUrl]="selectedFeedUrl"
+                  [feedEntryGuid]="selectedFeedEntryGuid">
   </app-feed-entry>
 </div>
-<app-stats class="app-stats">
+<app-stats [feedUrl]="selectedFeedUrl"
+           [feedEntryGuid]="selectedFeedEntryGuid">
 </app-stats>

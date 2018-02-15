@@ -6,6 +6,15 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  selectedFeedUrl: string;
   selectedFeedEntryGuid: string;
+  private selectedFeedUrlValue: string;
+
+  get selectedFeedUrl() {
+    return this.selectedFeedUrlValue;
+  }
+
+  set selectedFeedUrl(value) {
+    this.selectedFeedUrlValue = value;
+    this.selectedFeedEntryGuid = null;
+  }
 }
