@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -10,7 +10,7 @@ import {FeedEntryIdentifier} from './models/feed-entry-identifier';
 
 @Injectable()
 export class FeedService {
-  private static feedParserUrl = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  private static feedParserUrl = 'https://api.rss2json.com/v1/api.json';
   private feedSubject: BehaviorSubject<Feed[]>;
 
   constructor(private http: HttpClient) {
@@ -92,7 +92,8 @@ export class FeedService {
   }
 
   private fetchFeed(feedUrl: string): Promise<FeedFetchResponse> {
-    return this.http.get<FeedFetchResponse>(FeedService.feedParserUrl.concat(encodeURIComponent(feedUrl)))
+    const params = new HttpParams().set('rss_url', feedUrl);
+    return this.http.get(FeedService.feedParserUrl, {params})
       .toPromise()
       .then((feedFetchResponse: FeedFetchResponse) => {
         feedFetchResponse.url = feedUrl;
