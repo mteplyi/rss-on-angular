@@ -1,0 +1,36 @@
+:host {
+  overflow-y: auto;
+}
+
+.control-section {
+  height: 30px;
+}
+
+.list-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 5px;
+}
+
+.list-item:hover {
+  background: #eee;
+}
+
+.list-item.selected {
+  background: #ddf;
+}
+
+.list-item-label {
+  flex-grow: 1;
+  margin: 0 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+button {
+  margin: 3px;
+  cursor: pointer;
+}

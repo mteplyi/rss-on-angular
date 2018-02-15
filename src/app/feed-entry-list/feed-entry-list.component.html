@@ -1,6 +1,5 @@
-<ul>
-  <li *ngFor="let feedEntry of feedEntries"
-      (click)="onSelect(feedEntry)">
-    {{feedEntry.title}}
-  </li>
-</ul>
+<div *ngFor="let feedEntry of feedEntries"
+     [ngClass]="{'list-item':true,'selected':feedEntry.guid===selectedFeedEntryGuid}"
+     (click)="onSelect(feedEntry)">
+  <span class="list-item-label">{{feedEntry.title}}</span>
+</div>

@@ -7,13 +7,15 @@ import {FeedService} from './feed.service';
 import {FeedListComponent} from './feed-list/feed-list.component';
 import {FeedEntryListComponent} from './feed-entry-list/feed-entry-list.component';
 import {FeedEntryComponent} from './feed-entry/feed-entry.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FeedListComponent,
     FeedEntryListComponent,
-    FeedEntryComponent
+    FeedEntryComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,

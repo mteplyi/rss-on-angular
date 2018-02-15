@@ -1,0 +1,39 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.app-content {
+  flex: 1 1 auto;
+  height: 100%;
+  width: 100%;
+  /*max-width: 960px;*/
+  display: flex;
+  flex-flow: row;
+  overflow-x: auto;
+}
+
+.app-content > * {
+  height: 100%;
+}
+
+app-feed-list {
+  flex: 0 0 320px;
+  border-right: 1px solid lightgray;
+}
+
+app-feed-entry-list {
+  flex: 0 0 320px;
+  border-right: 1px solid lightgray;
+}
+
+app-feed-entry {
+  flex: 1 0 320px;
+}
+
+app-stats {
+  flex-basis: 160px;
+  display: block;
+  border-top: 1px solid lightgray;
+}

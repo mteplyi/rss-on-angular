@@ -1,3 +1,11 @@
-<div *ngIf="feedEntry"
-     [innerHtml]="feedEntry.content">
+<div *ngIf="feedEntry">
+  <h2 style="">
+    {{feedEntry.title}}
+  </h2>
+  <h5>
+    {{feedEntry.pubDate}} <{{feedEntry.author}}>
+  </h5>
+  <div class="content-container"
+       [innerHtml]="feedEntry.content">
+  </div>
 </div>

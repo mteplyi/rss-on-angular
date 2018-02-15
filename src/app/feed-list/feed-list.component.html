@@ -1,9 +1,14 @@
-<button (click)="onUpdateAll()">Update</button>
-<button (click)="onAdd()">Add</button>
-<ul>
-  <li *ngFor="let feed of feeds"
-      (click)="onSelect(feed)">
-    {{feed.title}} ({{feed.entries.length}})
-    <button (click)="onRemove(feed)">Remove</button>
-  </li>
-</ul>
+<div class="control-section">
+  <button (click)="onUpdateAll()">
+    Update
+  </button>
+  <button (click)="onAdd()">
+    Add
+  </button>
+</div>
+<div *ngFor="let feed of feeds"
+     [ngClass]="{'list-item':true,'selected':feed.url===selectedFeedUrl}"
+     (click)="onSelect(feed)">
+  <span class="list-item-label">{{feed.title}}</span>
+  <button (click)="onRemove(feed)">x</button>
+</div>

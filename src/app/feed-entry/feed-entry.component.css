@@ -1,0 +1,12 @@
+:host {
+  overflow-y: auto;
+}
+
+:host > * {
+  margin: 0 10px;
+}
+
+.content-container ::ng-deep img {
+  max-width: 100%;
+  height: auto;
+}
