@@ -1,7 +1,7 @@
-<app-feed-list (select)="onSelectFeed($event)">
+<app-feed-list [(selectedFeedUrl)]="selectedFeedUrl">
 </app-feed-list>
 <app-feed-entry-list [feedUrl]="selectedFeedUrl"
-                     (select)="onSelectFeedEntry($event)">
+                     [(selectedFeedEntryGuid)]="selectedFeedEntryGuid">
 </app-feed-entry-list>
 <app-feed-entry [feedEntryIdentifier]="{feedUrl:selectedFeedUrl,feedEntryGuid:selectedFeedEntryGuid}">
 </app-feed-entry>

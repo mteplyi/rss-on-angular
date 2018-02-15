@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Feed} from '../models/feed';
 import {FeedService} from '../feed.service';
 
@@ -9,7 +9,8 @@ import {FeedService} from '../feed.service';
 })
 export class FeedListComponent {
   feeds: Feed[];
-  @Output() private select = new EventEmitter<string>();
+  @Input() selectedFeedUrl: string;
+  @Output() selectedFeedUrlChange = new EventEmitter<string>();
 
   constructor(private feedService: FeedService) {
     feedService.getFeeds()
@@ -33,6 +34,6 @@ export class FeedListComponent {
   }
 
   onSelect(feed: Feed): void {
-    this.select.emit(feed.url);
+    this.selectedFeedUrlChange.emit(feed.url);
   }
 }

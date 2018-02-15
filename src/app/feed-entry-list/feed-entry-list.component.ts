@@ -10,7 +10,8 @@ import {FeedService} from '../feed.service';
 export class FeedEntryListComponent implements OnChanges {
   feedEntries: FeedEntry[];
   @Input() private feedUrl: string;
-  @Output() private select = new EventEmitter<string>();
+  @Input() selectedFeedEntryGuid: string;
+  @Output() selectedFeedEntryGuidChange = new EventEmitter<string>();
 
   constructor(private feedService: FeedService) {
   }
@@ -23,6 +24,6 @@ export class FeedEntryListComponent implements OnChanges {
   }
 
   onSelect(feedEntry: FeedEntry): void {
-    this.select.emit(feedEntry.guid);
+    this.selectedFeedEntryGuidChange.emit(feedEntry.guid);
   }
 }

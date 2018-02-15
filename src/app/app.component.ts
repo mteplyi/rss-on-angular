@@ -8,12 +8,4 @@ import {Component} from '@angular/core';
 export class AppComponent {
   selectedFeedUrl: string;
   selectedFeedEntryGuid: string;
-
-  onSelectFeed(feedUrl: string): void {
-    this.selectedFeedUrl = feedUrl;
-  }
-
-  onSelectFeedEntry(feedEntryGuid: string): void {
-    this.selectedFeedEntryGuid = feedEntryGuid;
-  }
 }
