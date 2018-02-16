@@ -27,15 +27,15 @@ export class StatsComponent implements OnChanges {
       this.feedService.getFeedEntries(this.feedUrl)
         .subscribe(feedEntries => {
           this.selectedFeedEntriesCount = feedEntries.length;
-          let authorCounter = 0;
+          let authorCount = 0;
           const authorRegister = {};
-          for (const {author} of feedEntries) {
+          feedEntries.forEach(({author}) => {
             if (!authorRegister.hasOwnProperty(author)) {
-              authorCounter++;
               authorRegister[author] = true;
+              authorCount++;
             }
-          }
-          this.selectedFeedAuthorsCount = authorCounter;
+          });
+          this.selectedFeedAuthorsCount = authorCount;
         });
     }
     if (changes.hasOwnProperty('feedUrl') || changes.hasOwnProperty('feedEntryGuid')) {
@@ -44,12 +44,19 @@ export class StatsComponent implements OnChanges {
           if (!feedEntry || !feedEntry.hasOwnProperty('content')) {
             return;
           }
-          const letterRegister = {A: 1, B: 2, C: 3};
-
-          // const arr = feedEntry.content
-          //   .match(/[^<]([a-z])[^>]/gui);
-          // console.log(arr);
-
+          const letterRegister = {};
+          feedEntry.content
+            .replace(/<[^><]*>|[^a-z]+|\s+/gui, '')
+            .toLocaleUpperCase()
+            .split('')
+            .sort()
+            .forEach(letter => {
+              if (!letterRegister.hasOwnProperty(letter)) {
+                letterRegister[letter] = 1;
+              } else {
+                letterRegister[letter]++;
+              }
+            });
           const chartLabels = [];
           const chartData = [];
           Object.keys(letterRegister).forEach((letter: string) => {
